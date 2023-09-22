@@ -1,0 +1,36 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app14-task1
+  labels:
+    app: app14
+  namespace: netology
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: app14
+  template:
+    metadata:
+      labels:
+        app: app14
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80
+      - name: multitool
+        image: wbitt/network-multitool
+        ports:
+        - name: "multitool-http"
+          containerPort: 8080
+        - name: "multitool-https"
+          containerPort: 11443
+        env:
+        - name: HTTP_PORT
+          value: "8080"
+        - name: HTTPS_PORT
+          value: "11443"
+...
