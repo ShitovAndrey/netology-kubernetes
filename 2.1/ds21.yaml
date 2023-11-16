@@ -1,0 +1,40 @@
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: ds21
+  labels:
+    app: appds21
+  namespace: netology
+spec:
+  selector:
+    matchLabels:
+      app: appds21
+  template:
+    metadata:
+      labels:
+        app: appds21
+    spec:
+      containers:
+      - name: multitool
+        image: wbitt/network-multitool
+        volumeMounts:
+        - name: varlog
+          mountPath: /mnt/var/log/syslog
+          readOnly: true
+        ports:
+        - name: "multitool-http"
+          containerPort: 8080
+        - name: "multitool-https"
+          containerPort: 11443
+        env:
+        - name: HTTP_PORT
+          value: "8080"
+        - name: HTTPS_PORT
+          value: "11443"
+      volumes:
+      - name: varlog
+        hostPath:
+          path: /var/log/syslog
+          type: File
+...

@@ -1,0 +1,44 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy21
+  labels:
+    app: app21
+  namespace: netology
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app21
+  template:
+    metadata:
+      labels:
+        app: app21
+    spec:
+      containers:
+      - name: multitool
+        image: wbitt/network-multitool
+        volumeMounts:
+        - name: empty-vol
+          mountPath: /mnt/shared/
+        ports:
+        - name: "multitool-http"
+          containerPort: 8080
+        - name: "multitool-https"
+          containerPort: 11443
+        env:
+        - name: HTTP_PORT
+          value: "8080"
+        - name: HTTPS_PORT
+          value: "11443"
+      - name: busybox
+        image: busybox
+        command: ['sh', '-c', 'while true; do echo "$(date) - Hello Netology. Wait 5 seconds..." >> /mnt/shared/hello.txt; sleep 5; done']
+        volumeMounts:
+        - name: empty-vol
+          mountPath: /mnt/shared/
+      volumes:
+      - name: empty-vol
+        emptyDir: {}
+...
