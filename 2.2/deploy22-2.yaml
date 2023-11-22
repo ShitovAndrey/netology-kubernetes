@@ -1,0 +1,39 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy22-2
+  labels:
+    app: app22-2
+  namespace: netology
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app22-2
+  template:
+    metadata:
+      labels:
+        app: app22-2
+    spec:
+      containers:
+      - name: multitool
+        image: wbitt/network-multitool
+        volumeMounts:
+        - name: vol22-2
+          mountPath: /mnt/shared/
+        ports:
+        - name: "multitool-http"
+          containerPort: 8080
+        - name: "multitool-https"
+          containerPort: 11443
+        env:
+        - name: HTTP_PORT
+          value: "8080"
+        - name: HTTPS_PORT
+          value: "11443"
+      volumes:
+      - name: vol22-2
+        persistentVolumeClaim:
+          claimName: pvc-auto
+...

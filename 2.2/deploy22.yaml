@@ -1,0 +1,45 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy22
+  labels:
+    app: app22
+  namespace: netology
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app22
+  template:
+    metadata:
+      labels:
+        app: app22
+    spec:
+      containers:
+      - name: multitool
+        image: wbitt/network-multitool
+        volumeMounts:
+        - name: vol22
+          mountPath: /mnt/shared/
+        ports:
+        - name: "multitool-http"
+          containerPort: 8080
+        - name: "multitool-https"
+          containerPort: 11443
+        env:
+        - name: HTTP_PORT
+          value: "8080"
+        - name: HTTPS_PORT
+          value: "11443"
+      - name: busybox
+        image: busybox
+        command: ['sh', '-c', 'while true; do echo "$(date) - Hello, Netology in task 22. Wait 5 seconds..." >> /mnt/shared/hello.txt; sleep 5; done']
+        volumeMounts:
+        - name: vol22
+          mountPath: /mnt/shared/
+      volumes:
+      - name: vol22
+        persistentVolumeClaim:
+          claimName: pvc-manual
+...
