@@ -1,0 +1,32 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy23-2
+  labels:
+    app: deploy23-2
+  namespace: netology
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deploy23-2
+  template:
+    metadata:
+      labels:
+        app: deploy23-2
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: /usr/share/nginx/html/index.html
+          subPath: index.html
+          name: vol-nginx-index
+      volumes:
+      - name: vol-nginx-index
+        configMap:
+          name: configmap21-3
+...

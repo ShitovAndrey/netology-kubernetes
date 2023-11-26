@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: configmap21-3
+  namespace: netology
+data:
+  index.html: |
+    <html>
+    <head><title>Hello Netology</title></head>
+    <body>
+      <h1>Hello Netology in task 2.3 about Kubernetes.</h1>
+      <p>This is main page.</p>
+    </body>
+    </html>
+...

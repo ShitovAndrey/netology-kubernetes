@@ -1,0 +1,50 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy23-1
+  labels:
+    app: deploy23-1
+  namespace: netology
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deploy23-1
+  template:
+    metadata:
+      labels:
+        app: deploy23-1
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: /etc/nginx/conf.d/default.conf
+          subPath: default.conf
+          name: vol-nginx-conf
+        - mountPath: /usr/share/nginx/html/index.html
+          subPath: index.html
+          name: vol-nginx-index
+      - name: multitool
+        image: wbitt/network-multitool
+        ports:
+        - name: "multitool-http"
+          containerPort: 80
+        - name: "multitool-https"
+          containerPort: 11443
+        env:
+        - name: HTTP_PORT
+          value: "80"
+        - name: HTTPS_PORT
+          value: "11443"
+      volumes:
+      - name: vol-nginx-conf
+        configMap:
+          name: configmap21-1
+      - name: vol-nginx-index
+        configMap:
+          name: configmap21-2
+...

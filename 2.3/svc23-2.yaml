@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc23-2
+  namespace: netology
+spec:
+  type: NodePort
+  selector:
+    app: deploy23-2
+  ports:
+    - name: nginx
+      protocol: TCP
+      port: 9001
+      targetPort: 80
+      nodePort: 30001
+...
