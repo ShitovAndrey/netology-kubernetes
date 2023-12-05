@@ -1,0 +1,19 @@
+---
+replicaCount: 1
+
+image:
+  repository: nginx
+  pullPolicy: IfNotPresent
+  tag: "1.16.0"
+
+imagePullSecrets: []
+nameOverride: "nginx-app"
+fullnameOverride: "nginx-app-chart"
+
+podAnnotations: {}
+podLabels: {}
+
+service:
+  type: NodePort
+  port: 80
+...
