@@ -1,0 +1,41 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy34
+  labels:
+    app: deploy34
+  namespace: netology
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: deploy34
+  template:
+    metadata:
+      labels:
+        app: deploy34
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.19.0
+        ports:
+        - containerPort: 80
+      - name: multitool
+        image: wbitt/network-multitool
+        ports:
+        - name: "multitool-http"
+          containerPort: 8180
+        - name: "multitool-https"
+          containerPort: 11443
+        env:
+        - name: HTTP_PORT
+          value: "8180"
+        - name: HTTPS_PORT
+          value: "11443"
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 4
+      maxSurge: 100%
+...
